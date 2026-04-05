@@ -2,8 +2,11 @@ import joblib
 import numpy as np
 
 
-# 🔹 teste se modelo carrega
 def test_model_load():
+    """
+    Verifica se os arquivos do modelo e do scaler são carregados corretamente,
+    garantindo que não estão corrompidos ou ausentes.
+    """
     model = joblib.load("model.pkl")
     scaler = joblib.load("scaler.pkl")
 
@@ -11,8 +14,11 @@ def test_model_load():
     assert scaler is not None
 
 
-# 🔹 teste de predição simples
 def test_model_prediction():
+    """
+    Testa a capacidade do modelo de realizar uma predição válida
+    a partir de uma única amostra de entrada.
+    """
     model = joblib.load("model.pkl")
     scaler = joblib.load("scaler.pkl")
 
@@ -25,8 +31,11 @@ def test_model_prediction():
     assert prediction[0] in ["ruim", "bom"]
 
 
-# 🔹 teste múltiplas entradas
 def test_model_multiple_inputs():
+    """
+    Avalia o comportamento do modelo ao receber múltiplas amostras,
+    verificando se todas as previsões retornadas pertencem às classes esperadas.
+    """
     model = joblib.load("model.pkl")
     scaler = joblib.load("scaler.pkl")
 

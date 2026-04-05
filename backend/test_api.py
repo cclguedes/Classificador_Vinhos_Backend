@@ -3,31 +3,33 @@ import json
 from app import app
 
 
-# 🔹 cliente de teste
 @pytest.fixture
 def client():
+    """
+    Fixture responsável por inicializar o cliente de testes da aplicação Flask.
+    Ativa o modo de teste e fornece uma instância reutilizável para os testes.
+    """
     app.config['TESTING'] = True
     with app.test_client() as client:
         yield client
 
 
-# 🔹 teste home
 def test_home(client):
+    """
+    Verifica se a rota raiz (/) realiza corretamente o redirecionamento
+    para a documentação da API (/openapi).
+    """
     response = client.get('/')
-    assert response.status_code == 200
-    data = json.loads(response.data)
-    assert 'message' in data
-
-
-# 🔹 teste docs redirect
-def test_docs(client):
-    response = client.get('/docs')
     assert response.status_code == 302
     assert '/openapi' in response.location
 
 
-# 🔹 teste predição válida
 def test_predict(client):
+    """
+    Testa o endpoint de predição com um payload válido,
+    verificando se a resposta contém a categoria prevista
+    dentro do conjunto esperado ("ruim" ou "bom").
+    """
     payload = {
         "fixed_acidity": 7.4,
         "volatile_acidity": 0.7,
@@ -56,8 +58,11 @@ def test_predict(client):
     assert data['categoria'] in ['ruim', 'bom']
 
 
-# 🔹 teste erro (payload incompleto)
 def test_predict_invalid(client):
+    """
+    Testa o comportamento do endpoint de predição quando recebe
+    um payload incompleto, esperando retorno de erro de validação (HTTP 422).
+    """
     payload = {
         "fixed_acidity": 7.4
     }

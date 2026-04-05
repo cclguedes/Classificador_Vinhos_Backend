@@ -7,15 +7,15 @@ import joblib
 import numpy as np
 
 
-# 🔹 Info da API
+# Configuração das informações básicas da API (título e versão)
 info = Info(title="API Classificador de Vinhos", version="1.0.0")
 app = OpenAPI(__name__, info=info)
 
-# 🔥 CORS liberado pro front
+# Habilitação de CORS para permitir requisições externas (ex.: frontend)
 CORS(app, resources={r"/*": {"origins": "*"}})
 
 
-# 🔹 Tags (padrão faculdade)
+# Definição de tags utilizadas na documentação da API
 home_tag = Tag(
     name="Documentação",
     description="Acesso à documentação da API"
@@ -27,12 +27,12 @@ vinho_tag = Tag(
 )
 
 
-# 🔹 Carregar modelo
+# Carregamento do modelo treinado e do scaler previamente salvos
 model = joblib.load("model.pkl")
 scaler = joblib.load("scaler.pkl")
 
 
-# 🔹 Schema (Swagger)
+# Definição do schema de entrada utilizado para validação dos dados via OpenAPI
 class VinhoInput(BaseModel):
     fixed_acidity: float
     volatile_acidity: float
@@ -47,16 +47,17 @@ class VinhoInput(BaseModel):
     alcohol: float
 
 
-# 🔹 Home (AGORA REDIRECIONA 🔥)
+# Rota raiz que redireciona automaticamente para a documentação da API
 @app.get("/", tags=[home_tag])
 def home():
     return redirect("/openapi")
 
 
-# 🔹 Endpoint principal
+# Endpoint responsável pela predição da qualidade do vinho
 @app.post("/predict", tags=[vinho_tag])
 def predict(body: VinhoInput):
     try:
+        # Extração dos valores recebidos no corpo da requisição
         values = [
             body.fixed_acidity,
             body.volatile_acidity,
@@ -71,18 +72,23 @@ def predict(body: VinhoInput):
             body.alcohol
         ]
 
+        # Conversão para array numpy e aplicação do scaler
         values = np.array([values])
         values_scaled = scaler.transform(values)
 
+        # Realização da predição com o modelo treinado
         prediction = model.predict(values_scaled)
 
+        # Retorno da resposta no formato JSON
         return jsonify({
             "categoria": prediction[0]
         })
 
     except Exception as e:
+        # Tratamento de erro genérico
         return jsonify({"error": str(e)}), 500
 
 
+# Execução da aplicação em modo de desenvolvimento
 if __name__ == "__main__":
     app.run(debug=True)
