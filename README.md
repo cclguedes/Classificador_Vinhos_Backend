@@ -4,6 +4,10 @@ Este projeto faz parte da minha avaliação na Pós-Graduação em Engenharia de
 
 A API pode ser gerenciada pelo seguinte front-end: https://github.com/cclguedes/Classificador_Vinhos_Frontend
 
+## Notebook
+
+https://colab.research.google.com/drive/1N-43thTEkgqTTrm_fL83R-6JrMA5hnVu?usp=sharing
+
 ## Tecnologias utilizadas
 
 - [Python](https://www.python.org/)
