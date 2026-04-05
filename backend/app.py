@@ -47,19 +47,13 @@ class VinhoInput(BaseModel):
     alcohol: float
 
 
-# 🔹 Home
+# 🔹 Home (AGORA REDIRECIONA 🔥)
 @app.get("/", tags=[home_tag])
 def home():
-    return {"message": "API de Classificação de Vinhos 🚀"}
-
-
-# 🔹 Docs (redirect padrão)
-@app.get("/docs", tags=[home_tag])
-def docs():
     return redirect("/openapi")
 
 
-# 🔹 Endpoint principal (CORRIGIDO 🔥)
+# 🔹 Endpoint principal
 @app.post("/predict", tags=[vinho_tag])
 def predict(body: VinhoInput):
     try:
