@@ -3,7 +3,7 @@ from flask import redirect, jsonify
 from flask_cors import CORS
 from pydantic import BaseModel
 
-import joblib
+import pickle
 import numpy as np
 
 
@@ -27,9 +27,9 @@ vinho_tag = Tag(
 )
 
 
-# Carregamento do modelo treinado e do scaler previamente salvos
-model = joblib.load("model.pkl")
-scaler = joblib.load("scaler.pkl")
+# Carregamento do modelo treinado previamente salvo
+with open("model.pkl", "rb") as f:
+    model = pickle.load(f)
 
 
 # Definição do schema de entrada utilizado para validação dos dados via OpenAPI
@@ -72,12 +72,11 @@ def predict(body: VinhoInput):
             body.alcohol
         ]
 
-        # Conversão para array numpy e aplicação do scaler
+        # Conversão para array numpy (CART não requer padronização)
         values = np.array([values])
-        values_scaled = scaler.transform(values)
 
         # Realização da predição com o modelo treinado
-        prediction = model.predict(values_scaled)
+        prediction = model.predict(values)
 
         # Retorno da resposta no formato JSON
         return jsonify({
