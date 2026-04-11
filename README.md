@@ -8,6 +8,10 @@ A API pode ser gerenciada pelo seguinte front-end: https://github.com/cclguedes/
 
 https://colab.research.google.com/drive/1jGN8AAOcWybZ5c3EUfoZ342NusqCAKfD?usp=sharing
 
+## Apresentação do trabalho
+
+https://youtu.be/waV9lkkuFXc
+
 ## Tecnologias utilizadas
 
 - [Python](https://www.python.org/)
