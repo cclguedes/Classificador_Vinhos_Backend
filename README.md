@@ -10,7 +10,7 @@ https://colab.research.google.com/drive/1jGN8AAOcWybZ5c3EUfoZ342NusqCAKfD?usp=sh
 
 ## Apresentação do trabalho
 
-https://youtu.be/waV9lkkuFXc
+https://youtu.be/rYMIIEWWP24
 
 ## Tecnologias utilizadas
 
