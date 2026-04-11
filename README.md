@@ -6,7 +6,7 @@ A API pode ser gerenciada pelo seguinte front-end: https://github.com/cclguedes/
 
 ## Notebook
 
-https://colab.research.google.com/drive/1N-43thTEkgqTTrm_fL83R-6JrMA5hnVu?usp=sharing
+https://colab.research.google.com/drive/1jGN8AAOcWybZ5c3EUfoZ342NusqCAKfD?usp=sharing
 
 ## Tecnologias utilizadas
 
