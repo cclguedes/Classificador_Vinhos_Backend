@@ -5,6 +5,7 @@ from pydantic import BaseModel
 
 import pickle
 import numpy as np
+import pandas as pd
 
 
 # Configuração das informações básicas da API (título e versão)
@@ -27,9 +28,16 @@ vinho_tag = Tag(
 )
 
 
-# Carregamento do modelo treinado previamente salvo
+# Carregamento do pipeline treinado (inclui pré-processamento + modelo)
 with open("model.pkl", "rb") as f:
-    model = pickle.load(f)
+    pipeline = pickle.load(f)
+
+# Nomes das colunas na mesma ordem usada no treinamento
+FEATURE_COLUMNS = [
+    "fixed acidity", "volatile acidity", "citric acid", "residual sugar",
+    "chlorides", "free sulfur dioxide", "total sulfur dioxide",
+    "density", "pH", "sulphates", "alcohol"
+]
 
 
 # Definição do schema de entrada utilizado para validação dos dados via OpenAPI
@@ -57,8 +65,8 @@ def home():
 @app.post("/predict", tags=[vinho_tag])
 def predict(body: VinhoInput):
     try:
-        # Extração dos valores recebidos no corpo da requisição
-        values = [
+        # Montagem do DataFrame com os nomes de colunas usados no treinamento
+        values = pd.DataFrame([[
             body.fixed_acidity,
             body.volatile_acidity,
             body.citric_acid,
@@ -70,13 +78,10 @@ def predict(body: VinhoInput):
             body.pH,
             body.sulphates,
             body.alcohol
-        ]
+        ]], columns=FEATURE_COLUMNS)
 
-        # Conversão para array numpy (CART não requer padronização)
-        values = np.array([values])
-
-        # Realização da predição com o modelo treinado
-        prediction = model.predict(values)
+        # O pipeline aplica o pré-processamento e realiza a predição
+        prediction = pipeline.predict(values)
 
         # Retorno da resposta no formato JSON
         return jsonify({
